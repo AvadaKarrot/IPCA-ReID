@@ -1,13 +1,10 @@
 # Code Usage
 
-train_clipreid_base.py: Image Enoder (CLIP)
+![]()
 
 # train_caption.py
 Image Encoder + Text Encoder (CLIP)
 
-make_model_caption.py
-
-build_transformer_caption
 
 - COOP.COOP_PROMPT: 可学习Prompt：ctx
 - COCOOP.COCOOP_PROMPT :  meta block for each instance

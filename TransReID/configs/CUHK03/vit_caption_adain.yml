@@ -1,0 +1,92 @@
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'on'
+  IF_WITH_CENTER: 'no'
+  NAME: 'ViT-B-16'
+  STRIDE_SIZE: [16, 16]
+  ID_LOSS_WEIGHT : 1.0
+  TRIPLET_LOSS_WEIGHT : 1.0
+  DEVICE_ID: ('0, 1')
+  CAPTION: True
+  PROMPT: True
+  TEXT_PROJ: True
+  ADAIN: True
+  
+
+INPUT:
+  PERSON_REID: True
+  SIZE_TRAIN: [256, 128]
+  SIZE_TEST: [256, 128]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.5 # random erasing
+  PADDING: 10
+  PIXEL_MEAN: [0.5, 0.5, 0.5]
+  PIXEL_STD: [0.5, 0.5, 0.5]
+
+DATASETS:
+  SOURCES: ('cuhk03')
+  # SOURCES: ['market1501']
+  ROOT_DIR: ('/home/test/LIVA/ZWQ/data')
+  TARGETS: ('msmt17')
+  # TRANSFORMS : ['random_flip', 'pad','random_crop', 'random_erase', 'sobel']
+  # TRANSFORMS : ['random_flip', 'pad','random_crop', 'random_erase', 'bilateral', 'color_jitter']
+  TRANSFORMS : ['random_flip', 'pad','random_crop', 'random_erase', 'color_jitter']
+  # TRANSFORMS: ['bilateral']
+
+DATALOADER:
+  # SAMPLER: 'softmax_triplet' ######### transreid
+  SAMPLER: 'RandomIdentitySampler' ######## deep
+  # SAMPLER: 'RandomSampler'  
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+
+SOLVER:
+  IMS_PER_BATCH: 256
+  OPTIMIZER_NAME: "Adam"
+  # BASE_LR: 0.000005
+  BASE_LR: 0.00001
+  WARMUP_METHOD: 'linear'
+  WARMUP_ITERS: 10
+  WARMUP_FACTOR: 0.1
+  WEIGHT_DECAY:  0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  LARGE_FC_LR: False
+  MAX_EPOCHS: 60
+  CHECKPOINT_PERIOD: 2
+  LOG_PERIOD: 20
+  EVAL_PERIOD: 2
+  BIAS_LR_FACTOR: 2
+  
+  STEPS: [30, 50]
+  GAMMA: 0.1
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 256
+  RE_RANKING: False
+  WEIGHT: '../logs/cuhkmsmt_clip-0-adain_01/model_best.pth.tar'
+  NECK_FEAT: 'before'
+  FEAT_NORM: 'yes'
+
+CLIP:
+  TEXT_FEAT: False
+  CAPTION: False
+  TEXT_FEAT_PATH: '/home/test/LIVA/ZWQ/pretrained/text_features.pt'
+  TEXT_FEAT_QUERY_PATH: '/home/test/LIVA/ZWQ/pretrained/text_features_prompt.pt'
+
+COOP:
+  COOP_PROMPT: False
+  CTX_INIT : 'A photo of'
+  # CTX_INIT: ""
+  CLASS_TOKEN_POSITION: 'end'
+MAPLE:
+  MAPLE_PROMPT : False
+  N_CTX : 3
+  CTX_INIT : "a photo of"
+  PROMPT_DEPTH : 1
+CAPTION:
+  CAP_NUM: [0]
+OUTPUT_DIR: '../logs/cuhkmsmt_clip-0-adain_01'
+
+
