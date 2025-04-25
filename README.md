@@ -7,6 +7,8 @@ Image Encoder + Text Encoder (CLIP)
 
 make_model_caption.py
 
+build_transformer_caption
+
 - COOP.COOP_PROMPT: 可学习Prompt：ctx
 - COCOOP.COCOOP_PROMPT :  meta block for each instance
 - MAPLE.MAPLE_PROMPT: 多模态可学习Prompt: 文本-图像 (1-12 layer)
